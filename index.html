@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Particles</title>
+    
+    <script src = "js/particles.js"></script>
+    <script src = "js/main.js"></script>
+    <link href = "CSS/nouislider.min.css" rel = "stylesheet"/>
+    <link href = "CSS/style.css" type="text/css" rel = "stylesheet"/> 
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'/>
+    <style>
+    body {
+    background-color: #FFFFFF;
+    }
+    canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    </style>
+</head>
+    <body width = "100%" height = "100%">    
+        <div id = "menu">
+            <p class = "text" id = "menuHeader">Options:</p>
+            <p class = "text">Average Radius:</p>
+            <div class = "menu" id = "size"></div>
+            <p class = "text">Average Speed:</p>
+            <div class = "menu" id = "speed">
+                <p class = "text" id = "speed1">X:</p>
+                <div class = "menu speed" id = "x"></div>
+                <p class = "text" id = "speed2">Y:</p>
+                <div class = "menu speed" id = "y"></div>
+                <p class = "text">Lock Speeds:</p>
+                <div class="onoffswitch menu" id = "switch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch1">
+                    <label class="onoffswitch-label" for="onoffswitch1">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <p align = "center" class = "text">Solid Bubbles:</p>
+                <div class="onoffswitch menu" id = "switchSolid">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch2">
+                    <label class="onoffswitch-label" for="onoffswitch2">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            <div class = "menu" id = "color">
+                <div class = "menu color" id = "red"></div>
+                <div class = "menu color" id = "blue"></div>
+                <div class = "menu color" id = "green"></div>
+            </div>
+        </div>
+        <canvas id = "cv"></canvas>
+        <script src = "js/nouislider.min.js"></script>
+    </body>
+
+</html>
