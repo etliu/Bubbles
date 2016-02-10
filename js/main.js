@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 var WIDTH,
     HEIGHT,
     maxVX = 10,
@@ -98,6 +99,34 @@ document.onmousemove = function(e){
     cursorY = e.pageY;
 }
 
+=======
+var WIDTH;
+var HEIGHT;
+var maxVX = 10;
+var maxVY = 10;
+var OVX = maxVX;
+var OVY = maxVY;
+var dR = 8;
+var minR = 12;
+var OMINR = minR;
+var fps = 60;
+var mousedown = 0;
+var parr = [];
+var ctx;
+var CANVAS;
+var cursorX;
+var cursorY;
+var sizeSlider;
+var vSliders = [];
+var lockSwitch;
+var lockedState = false;
+var lockedSlider = false;
+var lockedValues = [1, 1]
+var solidSwitch;
+var isSolid = false;
+ 
+var maxEntities = 1000;
+>>>>>>> Stashed changes
 window.onload = function () {
     solidSwitch = document.getElementById("switchSolid");
     lockSwitch = document.getElementById("switch");
@@ -205,6 +234,80 @@ window.onload = function () {
     toggleSolid();
 
     main();
+}
+function crossUpdate ( value, slider ) {
+
+	// If the sliders aren't interlocked, don't
+	// cross-update.
+	if ( !lockedState ) return;
+
+	// Select whether to increase or decrease
+	// the other slider value.
+	var a = vSliders[0] === slider ? 0 : 1, b = a ? 0 : 1;
+
+	// Offset the slider value.
+	value -= lockedValues[b] - lockedValues[a];
+
+	// Set the value
+	slider.noUiSlider.set(value);
+}
+
+function createP(){
+    if(mousedown == 1){
+        var xPos = Math.random() > .5;
+        var yPos = Math.random() > .5;
+        var vx = (~~(Math.random()*maxVX))+1;
+        var vy = (~~(Math.random()*maxVY))+1;
+        if (xPos) vx *= -1;
+        if (yPos) vy *= -1;
+        var rad = Math.floor(Math.random()*dR)+minR;
+        parr.push(new Particle(vx, vy, cursorX, cursorY, rad));
+        parr[parr.length-1].setVX(vSliders[0].noUiSlider.get(0));
+        parr[parr.length-1].setVY(vSliders[1].noUiSlider.get(0));
+        
+        if(parr.length > maxEntities) parr.shift();
+    }
+}
+
+function render(){
+    
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    for(var i = 0; i < parr.length; i++){
+        ctx.beginPath();
+        ctx.arc(parr[i].x, parr[i].y, parr[i].r, 0, 2*Math.PI);
+        ctx.strokeStyle = parr[i].cstr;
+        (isSolid)?drawSolid(parr[i].transToSolid()):drawStroke(parr[i].transToStroke());
+    }
+}
+
+function drawSolid(color){
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
+}
+
+function drawStroke(color){
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
+}
+
+function main(){
+    createP();
+    for(var i = 0; i < parr.length; i++){
+//        for(var j = i+1; j < parr.length; j++){
+//            parr[i].pCollision(parr[j]);
+//        }
+        parr[i].move();
+    }
+    render();
+}
+
+var cursorX;
+var cursorY;
+document.onmousemove = function(e){
+    cursorX = e.pageX;
+    cursorY = e.pageY;
 }
 
 setInterval(main, 1000/fps);
