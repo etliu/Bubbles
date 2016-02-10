@@ -1,29 +1,28 @@
-var WIDTH;
-var HEIGHT;
-var maxVX = 10;
-var maxVY = 10;
-var OVX = maxVX;
-var OVY = maxVY;
-var dR = 8;
-var minR = 12;
-var OMINR = minR;
-var fps = 60;
-var mousedown = 0;
-var parr = [];
-var ctx;
-var CANVAS;
-var cursorX;
-var cursorY;
-var sizeSlider;
-var vSliders = [];
-var lockSwitch;
-var lockedState = false;
-var lockedSlider = false;
-var lockedValues = [1, 1]
-var solidSwitch;
-var isSolid = false;
- 
-var maxEntities = 1000;
+var WIDTH,
+    HEIGHT,
+    maxVX = 10,
+    maxVY = 10,
+    OVX = maxVX,
+    OVY = maxVY,
+    dR = 8,
+    minR = 12,
+    OMINR = minR,
+    fps = 60,
+    mousedown = 0,
+    parr = [],
+    ctx,
+    CANVAS,
+    cursorX,
+    cursorY,
+    sizeSlider,
+    vSliders = [],
+    lockSwitch,
+    lockedState = false,
+    lockedSlider = false,
+    lockedValues = [1, 1],
+    solidSwitch,
+    isSolid = false,
+    maxEntities = 1000;
 
 function crossUpdate ( value, slider ) {
 
@@ -54,13 +53,12 @@ function createP(){
         parr.push(new Particle(vx, vy, cursorX, cursorY, rad));
         parr[parr.length-1].setVX(vSliders[0].noUiSlider.get(0));
         parr[parr.length-1].setVY(vSliders[1].noUiSlider.get(0));
-        
+
         if(parr.length > maxEntities) parr.shift();
     }
 }
 
 function render(){
-    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     for(var i = 0; i < parr.length; i++){
         ctx.beginPath();
@@ -101,7 +99,6 @@ document.onmousemove = function(e){
 }
 
 window.onload = function () {
-    
     solidSwitch = document.getElementById("switchSolid");
     lockSwitch = document.getElementById("switch");
     CANVAS = document.getElementById("cv");
@@ -111,15 +108,16 @@ window.onload = function () {
     HEIGHT = document.body.clientHeight;
     CANVAS.height = HEIGHT;
     CANVAS.width = WIDTH;
+
     document.addEventListener("mousedown", function(){
         mousedown = 1;
     });
     document.addEventListener("mouseup", function(){
         mousedown = 0;
     });
-    
+
     sizeSlider = document.getElementById('size');
-    
+
     noUiSlider.create(sizeSlider, {
         start: 0,
         step: 1,
@@ -130,9 +128,9 @@ window.onload = function () {
             'max': 10
         }
     });
-    
+
     vSliders = document.getElementsByClassName('speed');
-    
+
     for (var i = 0; i < vSliders.length; i++){
         noUiSlider.create(vSliders[i], {
             animate: false,
@@ -146,27 +144,27 @@ window.onload = function () {
             }
         });
     }
-    
+
     vSliders[0].noUiSlider.on('update', function(){
         for (var i = 0; i < parr.length; i++){
             parr[i].setVX(vSliders[0].noUiSlider.get());
         }
     });
-        
+
     vSliders[1].noUiSlider.on('update', function(){
         for (var i = 0; i < parr.length; i++){
             parr[i].setVY(vSliders[1].noUiSlider.get());
         }
     });
-        
+
     sizeSlider.noUiSlider.on('update', function(){
-        minR = OMINR+Math.round(sizeSlider.noUiSlider.get()); 
+        minR = OMINR+Math.round(sizeSlider.noUiSlider.get());
         for (var i = 0; i < parr.length; i++){
             parr[i].setRadius(Math.round(sizeSlider.noUiSlider.get()));
         }
     });
-    
-    function toggleLock() { 
+
+    function toggleLock() {
         lockSwitch.addEventListener('mousedown', function(){
 	        lockedState = true;
             lockSwitch.addEventListener('mousedown', function(){
@@ -176,7 +174,7 @@ window.onload = function () {
         });
     }
     toggleLock();
-    
+
     function setLockedValues ( ) {
 	lockedValues = [
 		Number(vSliders[0].noUiSlider.get()),
@@ -186,7 +184,7 @@ window.onload = function () {
 
     vSliders[0].noUiSlider.on('change', setLockedValues);
     vSliders[1].noUiSlider.on('change', setLockedValues);
-    
+
     vSliders[0].noUiSlider.on('slide', function( values, handle ){
     	crossUpdate(values[handle], vSliders[1]);
     });
@@ -194,7 +192,7 @@ window.onload = function () {
     vSliders[1].noUiSlider.on('slide', function( values, handle ){
     	crossUpdate(values[handle], vSliders[0]);
     });
-    
+
     function toggleSolid() {
         solidSwitch.addEventListener('mousedown', function(){
             isSolid = true;
@@ -205,7 +203,7 @@ window.onload = function () {
         });
     }
     toggleSolid();
-    
+
     main();
 }
 
